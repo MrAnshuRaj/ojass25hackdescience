@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@color/white"
+    android:id="@+id/main"
+    >
+
+    <!-- Logo -->
+    <ImageView
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:src="@drawable/logo_tmg"
+        android:layout_gravity="center"
+        android:contentDescription="App Logo"/>
+
+    <!-- Welcome Text -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Track My Guard"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:paddingTop="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sign-in to your Account"
+        android:textSize="16sp"
+        android:textColor="@color/gray"
+        android:gravity="center"
+        android:paddingBottom="20dp"/>
+
+    <!-- Login Form -->
+    <EditText
+        android:id="@+id/email"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/input_bg"
+        android:hint="Email ID"
+        android:padding="10dp"
+        android:textColorHint="#9B9B9B" />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/input_bg"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:padding="10dp"
+        android:textColorHint="#9B9B9B" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Forgot your Password?"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:textStyle="bold"
+        android:textSize="14sp"
+        android:textColor="@color/orange"
+        android:gravity="end"
+        android:padding="10dp"/>
+
+    <!-- Login Button -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnLogin"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/btn_bg"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:backgroundTint="@color/orange"
+        android:text="Login"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+
+    <!-- Social Media Login -->
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Or Login using social Media"-->
+<!--        android:textSize="14sp"-->
+<!--        android:textColor="@color/gray"-->
+<!--        android:gravity="center"-->
+<!--        android:padding="10dp"/>-->
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:gravity="center">-->
+
+<!--        <ImageView-->
+<!--            android:layout_width="40dp"-->
+<!--            android:layout_height="40dp"-->
+<!--            android:src="@drawable/ic_facebook"-->
+<!--            android:padding="10dp"/>-->
+
+<!--        <ImageView-->
+<!--            android:layout_width="40dp"-->
+<!--            android:layout_height="40dp"-->
+<!--            android:src="@drawable/ic_twitter"-->
+<!--            android:padding="10dp"/>-->
+<!--    </LinearLayout>-->
+
+    <!-- Register Link -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Don’t have an account? Register New"
+        android:layout_marginTop="12dp"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="@color/orange"
+        android:gravity="center"
+        android:padding="10dp"
+        android:onClick="openRegisterActivity"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Login as Admin"
+        android:layout_marginTop="12dp"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="@color/orange"
+        android:gravity="center"
+        android:padding="10dp"
+        android:onClick="openRegisterActivity"/>
+
+</LinearLayout>

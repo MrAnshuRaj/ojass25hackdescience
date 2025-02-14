@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:gravity="center"
+    android:background="@color/white"
+    android:id="@+id/main"
+    tools:context=".AdminLoginActivity">
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/logo_tmg"
+        android:layout_gravity="center"
+        android:contentDescription="Admin Logo" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Admin Login"
+        android:textSize="24sp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginTop="16dp" />
+
+    <EditText
+        android:id="@+id/adminEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="Enter Email"
+        android:inputType="textEmailAddress"
+        android:padding="12dp"
+        android:background="@drawable/input_bg"
+        android:textColor="@color/black"
+        android:textColorHint="@color/gray" />
+
+    <EditText
+        android:id="@+id/adminPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Password"
+        android:inputType="textPassword"
+        android:padding="12dp"
+        android:background="@drawable/input_bg"
+        android:textColor="@color/black"
+        android:textColorHint="@color/gray"
+        android:layout_marginTop="10dp"/>
+
+    <Button
+        android:id="@+id/btnAdminLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/orange"
+        android:padding="12dp"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Forgot Password?"
+        android:textColor="@color/orange"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp" />
+
+</LinearLayout>
