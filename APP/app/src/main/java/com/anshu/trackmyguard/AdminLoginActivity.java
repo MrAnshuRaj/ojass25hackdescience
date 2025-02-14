@@ -72,7 +72,7 @@ public class AdminLoginActivity extends AppCompatActivity {
                 String role = documentSnapshot.getString("role");
                 if ("admin".equals(role)) {
                     Toast.makeText(AdminLoginActivity.this, "Admin Login Successful!", Toast.LENGTH_SHORT).show();
-                   // startActivity(new Intent(AdminLoginActivity.this, AdminDashboardActivity.class));
+                    startActivity(new Intent(AdminLoginActivity.this, AdminDashboardActivity.class));
                     finish();
                 } else {
                     Toast.makeText(AdminLoginActivity.this, "Access Denied! Not an Admin.", Toast.LENGTH_SHORT).show();

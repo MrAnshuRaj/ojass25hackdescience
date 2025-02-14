@@ -7,15 +7,17 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -24,7 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
-    private EditText usernameField, emailField, passwordField;
+    private EditText usernameField, emailField, passwordField,organizationField;
     private Button registerButton;
     private CheckBox termsCheckBox;
     private FirebaseAuth auth;
@@ -47,12 +49,14 @@ public class RegisterActivity extends AppCompatActivity {
         passwordField = findViewById(R.id.password);
         termsCheckBox = findViewById(R.id.checkbox_terms);
         registerButton = findViewById(R.id.btnRegister);
+        organizationField=findViewById(R.id.organization);
 
         registerButton.setOnClickListener(v -> registerUser());
     }
     private void registerUser() {
         String username = usernameField.getText().toString().trim();
         String email = emailField.getText().toString().trim();
+        String organization = organizationField.getText().toString().trim();
         String password = passwordField.getText().toString().trim();
 
         if (username.isEmpty() || email.isEmpty() || password.isEmpty()) {
@@ -70,19 +74,27 @@ public class RegisterActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         FirebaseUser user = auth.getCurrentUser();
                         if (user != null) {
-                            saveUserToFirestore(user.getUid(), username, email);
+                            saveUserToFirestore(user.getUid(), username, email,organization);
+                            startActivity(new Intent(RegisterActivity.this, GuardDashboard.class));
+                            finish();
                         }
                     } else {
                         Toast.makeText(RegisterActivity.this, "Registration Failed", Toast.LENGTH_SHORT).show();
                     }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(RegisterActivity.this,e.getMessage(),Toast.LENGTH_SHORT).show();
+                    }
                 });
     }
 
-    private void saveUserToFirestore(String userId, String username, String email) {
+    private void saveUserToFirestore(String userId, String username, String email, String organization) {
         DocumentReference userRef = db.collection("Users").document(userId);
         Map<String, Object> user = new HashMap<>();
         user.put("username", username);
         user.put("email", email);
+        user.put("organization", organization);
         user.put("role", "guard");  // Default role (can be changed later)
 
         userRef.set(user)

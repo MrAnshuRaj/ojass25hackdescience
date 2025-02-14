@@ -13,6 +13,36 @@
         android:theme="@style/Theme.TrackMyGuard"
         tools:targetApi="31">
         <activity
+            android:name=".AdminRegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".GuardDashboard"
+            android:exported="false" />
+        <activity
+            android:name=".FeedbackActivity"
+            android:exported="false" />
+        <activity
+            android:name=".IncidentReportingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".VerificationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AttendanceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AssignGuardsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LiveTrackingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".GuardDatabaseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AdminDashboardActivity"
+            android:exported="false" />
+        <activity
             android:name=".AdminLoginActivity"
             android:exported="false" />
         <activity
