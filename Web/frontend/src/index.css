@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+html, body {
+    height: 100%;
+  }
+  
+  /* Ensure the root element takes up the full height */
+  #root {
+    height: 100%;
+  }
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
@@ -14,23 +22,21 @@ color: #333;
 }
 
 a {
-    color: #ea580c; /* Orange-600 */
+    color: #ea580c;
     text-decoration: none;
   }
   
-  a:hover {
-    text-decoration: underline;
-  }
+  
   
   button {
-    background-color: #ea580c; /* Orange-600 */
+    background-color: #ea580c; 
     color: white;
     border: none;
     padding: 0.5rem 1rem;
-    border-radius: 0.375rem; /* Rounded corners */
+    border-radius: 0.375rem;
     cursor: pointer;
   }
   
   button:hover {
-    background-color: #c2410c; /* Orange-700 */
+    background-color: #c2410c; 
   }

@@ -7,6 +7,7 @@ import GuardList from "./pages/GuardList";
 import IncidentReports from "./pages/IncidentReports";
 import NotFound from "./pages/NotFound";
 import "./App.css";
+import "./index.css";
 
 const App = () => {
   return (
@@ -14,7 +15,7 @@ const App = () => {
       <Navbar />
       <main className="p-4">
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/guards" element={<GuardList />} />
           <Route path="/incidents" element={<IncidentReports />} />
