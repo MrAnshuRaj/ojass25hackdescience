@@ -1,6 +1,7 @@
 package com.anshu.trackmyguard;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -27,6 +28,8 @@ import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
     private EditText usernameField, emailField, passwordField,organizationField;
+    SharedPreferences sharedPreferences ;
+    SharedPreferences.Editor editor;
     private Button registerButton;
     private CheckBox termsCheckBox;
     private FirebaseAuth auth;
@@ -43,7 +46,8 @@ public class RegisterActivity extends AppCompatActivity {
         });
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-
+        sharedPreferences = getSharedPreferences("TrackMyGuard", MODE_PRIVATE);
+        editor = sharedPreferences.edit();
         usernameField = findViewById(R.id.user_name);
         emailField = findViewById(R.id.email);
         passwordField = findViewById(R.id.password);
@@ -75,8 +79,6 @@ public class RegisterActivity extends AppCompatActivity {
                         FirebaseUser user = auth.getCurrentUser();
                         if (user != null) {
                             saveUserToFirestore(user.getUid(), username, email,organization);
-                            startActivity(new Intent(RegisterActivity.this, GuardDashboard.class));
-                            finish();
                         }
                     } else {
                         Toast.makeText(RegisterActivity.this, "Registration Failed", Toast.LENGTH_SHORT).show();
@@ -100,7 +102,9 @@ public class RegisterActivity extends AppCompatActivity {
         userRef.set(user)
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(RegisterActivity.this, "User Registered Successfully!", Toast.LENGTH_SHORT).show();
-                   // startActivity(new Intent(RegisterActivity.this, DashboardActivity.class));
+                    editor.putString("userType","Guard");
+                    editor.apply();
+                    startActivity(new Intent(RegisterActivity.this, GuardDashboard.class));
                     finish();
                 })
                 .addOnFailureListener(e -> Toast.makeText(RegisterActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show());

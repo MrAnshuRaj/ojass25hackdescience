@@ -1,6 +1,7 @@
 package com.anshu.trackmyguard;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -18,15 +19,23 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
     private EditText emailField, passwordField;
+    SharedPreferences sharedPreferences ;
+    SharedPreferences.Editor editor;
     private Button loginButton;
     private FirebaseAuth auth;
 
     @Override
     protected void onStart() {
         super.onStart();
+        sharedPreferences = getSharedPreferences("TrackMyGuard", MODE_PRIVATE);
+        String userType = sharedPreferences.getString("userType", "Guard");
         auth = FirebaseAuth.getInstance();
-        if (auth.getCurrentUser() != null) {
+        if (auth.getCurrentUser() != null && userType.equalsIgnoreCase("Guard")) {
             startActivity(new Intent(MainActivity.this, GuardDashboard.class));
+            finish();
+        }
+        else if (auth.getCurrentUser() != null && userType.equalsIgnoreCase("Admin")) {
+            startActivity(new Intent(MainActivity.this, AdminDashboardActivity.class));
             finish();
         }
     }
@@ -34,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sharedPreferences = getSharedPreferences("TrackMyGuard", MODE_PRIVATE);
+        editor = sharedPreferences.edit();
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -53,6 +64,16 @@ public class MainActivity extends AppCompatActivity {
                 loginUser();
             }
         });
+        //admin Register
+        TextView registerAdmin = findViewById(R.id.registerAdmin);
+        registerAdmin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, AdminRegisterActivity.class));
+                finish();
+            }
+        });
+        //admin Login
         TextView loginAdmin = findViewById(R.id.adminLogin);
         loginAdmin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,6 +98,8 @@ public class MainActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         Toast.makeText(MainActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                        editor.putString("userType","Guard");
+                        editor.apply();
                         startActivity(new Intent(MainActivity.this, GuardDashboard.class));
                         finish();
                     } else {

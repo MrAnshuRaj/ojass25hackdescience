@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:id="@+id/main"
+    android:orientation="vertical"
+    tools:context=".IncidentReportingActivity">
+
+    <TextView
+        android:id="@+id/textIncidentTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Report an Incident"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/orange" />
+
+    <EditText
+        android:id="@+id/editIncidentDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Describe the incident"
+        android:layout_marginTop="8dp"
+        android:inputType="textMultiLine"
+        android:minHeight="100dp"
+        android:padding="10dp"
+        android:background="@drawable/input_bg"/>
+
+    <Spinner
+        android:id="@+id/spinnerIncidentType"
+        android:layout_width="match_parent"
+        android:layout_marginTop="8dp"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/textLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Fetching location..."
+        android:textStyle="italic"
+        android:paddingTop="5dp" />
+
+    <org.osmdroid.views.MapView
+        android:id="@+id/mapIncidentLocation"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="8dp" />
+
+    <Button
+        android:id="@+id/btnCaptureImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Capture Image"
+        android:backgroundTint="@color/orange" />
+
+    <Button
+        android:id="@+id/btnSubmitIncident"
+        android:layout_width="match_parent"
+        android:layout_marginTop="8dp"
+        android:layout_height="wrap_content"
+        android:text="Submit Report"
+        android:backgroundTint="@color/black" />
+</LinearLayout>

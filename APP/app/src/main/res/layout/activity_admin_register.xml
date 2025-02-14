@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFF5E1"
+    android:id="@+id/main"
     tools:context=".AdminRegisterActivity">
 
     <!-- Toolbar -->
@@ -15,66 +16,84 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@color/orange"
         android:title="Admin Registration"
-        android:titleTextColor="@android:color/white"/>
+        android:titleTextColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Admin Name -->
     <EditText
         android:id="@+id/etAdminName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:background="@drawable/input_bg"
         android:hint="Admin Name"
         android:padding="12dp"
-        android:background="@android:color/white"
         android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="16dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
     <!-- Email -->
+
+    <!-- Password -->
+
+    <EditText
+        android:id="@+id/organizationName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:background="@drawable/input_bg"
+        android:hint="Organization Name"
+        android:padding="12dp"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etAdminName" />
+
     <EditText
         android:id="@+id/etAdminEmail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:background="@drawable/input_bg"
         android:hint="Email ID"
-        android:padding="12dp"
-        android:background="@android:color/white"
-        android:textSize="16sp"
         android:inputType="textEmailAddress"
-        app:layout_constraintTop_toBottomOf="@id/etAdminName"
-        app:layout_constraintStart_toStartOf="parent"
+        android:padding="12dp"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="16dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/organizationName" />
 
-    <!-- Password -->
     <EditText
         android:id="@+id/etAdminPassword"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:background="@drawable/input_bg"
         android:hint="Password"
-        android:padding="12dp"
-        android:background="@android:color/white"
-        android:textSize="16sp"
         android:inputType="textPassword"
-        app:layout_constraintTop_toBottomOf="@id/etAdminEmail"
-        app:layout_constraintStart_toStartOf="parent"
+        android:padding="12dp"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="16dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etAdminEmail" />
 
     <!-- Confirm Password -->
     <EditText
         android:id="@+id/etAdminConfirmPassword"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:background="@drawable/input_bg"
         android:hint="Confirm Password"
-        android:padding="12dp"
-        android:background="@android:color/white"
-        android:textSize="16sp"
         android:inputType="textPassword"
-        app:layout_constraintTop_toBottomOf="@id/etAdminPassword"
-        app:layout_constraintStart_toStartOf="parent"
+        android:padding="12dp"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="16dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etAdminPassword" />
 
     <!-- Register Button -->
     <Button

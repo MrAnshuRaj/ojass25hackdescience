@@ -1,6 +1,7 @@
 package com.anshu.trackmyguard;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -9,6 +10,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -21,6 +24,8 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class AdminLoginActivity extends AppCompatActivity {
     private EditText emailField, passwordField;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
     private Button loginButton;
     private FirebaseAuth auth;
     private FirebaseFirestore db;
@@ -36,7 +41,8 @@ public class AdminLoginActivity extends AppCompatActivity {
         });
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-
+        sharedPreferences = getSharedPreferences("TrackMyGuard", MODE_PRIVATE);
+        editor = sharedPreferences.edit();
         emailField = findViewById(R.id.adminEmail);
         passwordField = findViewById(R.id.adminPassword);
         loginButton = findViewById(R.id.btnAdminLogin);
@@ -57,21 +63,29 @@ public class AdminLoginActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         FirebaseUser user = auth.getCurrentUser();
                         if (user != null) {
+                            Toast.makeText(AdminLoginActivity.this,"Authenticating user...",Toast.LENGTH_SHORT).show();
                             checkAdminRole(user.getUid());
                         }
                     } else {
                         Toast.makeText(AdminLoginActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
                     }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(AdminLoginActivity.this,e.getMessage(),Toast.LENGTH_SHORT).show();
+                    }
                 });
     }
 
     private void checkAdminRole(String userId) {
-        DocumentReference userRef = db.collection("Users").document(userId);
+        DocumentReference userRef = db.collection("admins").document(userId);
         userRef.get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
                 String role = documentSnapshot.getString("role");
                 if ("admin".equals(role)) {
                     Toast.makeText(AdminLoginActivity.this, "Admin Login Successful!", Toast.LENGTH_SHORT).show();
+                    editor.putString("userType","Admin");
+                    editor.apply();
                     startActivity(new Intent(AdminLoginActivity.this, AdminDashboardActivity.class));
                     finish();
                 } else {

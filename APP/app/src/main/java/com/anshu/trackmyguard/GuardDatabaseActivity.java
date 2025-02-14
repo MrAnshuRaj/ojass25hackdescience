@@ -36,6 +36,12 @@ public class GuardDatabaseActivity extends AppCompatActivity {
         guardList = new ArrayList<>();
         guardList.add(new Guard("Dheeraj",25,"Google_guard","Hostel H","Amazon_guard",
                 "https://firebasestorage.googleapis.com/v0/b/antakshari-75fe9.appspot.com/o/uploads%2F1723835750958.jpeg?alt=media&token=ed6876d9-06c9-4dcd-adf1-d49d1e3431c7"));
+        guardList.add(new Guard("Dheeraj",25,"Google_guard","Hostel H","Amazon_guard",
+                "https://firebasestorage.googleapis.com/v0/b/antakshari-75fe9.appspot.com/o/uploads%2F1723835750958.jpeg?alt=media&token=ed6876d9-06c9-4dcd-adf1-d49d1e3431c7"));
+        guardList.add(new Guard("Dheeraj",25,"Google_guard","Hostel H","Amazon_guard",
+                "https://firebasestorage.googleapis.com/v0/b/antakshari-75fe9.appspot.com/o/uploads%2F1723835750958.jpeg?alt=media&token=ed6876d9-06c9-4dcd-adf1-d49d1e3431c7"));
+        guardList.add(new Guard("Dheeraj",25,"Google_guard","Hostel H","Amazon_guard",
+                "https://firebasestorage.googleapis.com/v0/b/antakshari-75fe9.appspot.com/o/uploads%2F1723835750958.jpeg?alt=media&token=ed6876d9-06c9-4dcd-adf1-d49d1e3431c7"));
         adapter = new GuardAdapter(this, guardList);
         recyclerView.setAdapter(adapter);
 
