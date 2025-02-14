@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+h1, h2, h3 {
+color: #333;
+}
+
+a {
+    color: #ea580c; /* Orange-600 */
+    text-decoration: none;
+  }
+  
+  a:hover {
+    text-decoration: underline;
+  }
+  
+  button {
+    background-color: #ea580c; /* Orange-600 */
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem; /* Rounded corners */
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #c2410c; /* Orange-700 */
+  }
