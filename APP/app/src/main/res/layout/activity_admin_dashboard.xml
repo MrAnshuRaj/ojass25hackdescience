@@ -28,12 +28,13 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/admin_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
             android:fontFamily="@font/adamina"
             android:gravity="center"
-            android:text="Welcome Anshu"
+            android:text="Welcome!"
             android:textColor="@color/orange"
             android:textSize="28sp"
             android:textStyle="bold" />

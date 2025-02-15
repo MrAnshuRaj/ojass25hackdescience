@@ -4,8 +4,13 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -20,14 +25,18 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import org.osmdroid.api.IGeoPoint;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
-import org.osmdroid.views.MapView;
 import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ReportIncidentActivity extends AppCompatActivity {
     private static final int LOCATION_PERMISSION_REQUEST = 100;
@@ -36,7 +45,14 @@ public class ReportIncidentActivity extends AppCompatActivity {
     private FusedLocationProviderClient fusedLocationClient;
     private LocationCallback locationCallback;
     private FirebaseFirestore firestore;
-    private String guardId = "Guard1";
+    private FirebaseAuth auth;
+
+    private EditText editTextTitle, editTextDescription;
+    private Button buttonSubmitReport;
+    private ProgressBar progressBar;
+
+    private String guardId = "Guard1"; // Placeholder, replace with actual guard ID
+    private double currentLatitude, currentLongitude; // Store last known location
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +64,16 @@ public class ReportIncidentActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        // Initialize UI elements
+
+        // Initialize Firebase
         firestore = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
+
+        // Initialize UI elements
+        editTextTitle = findViewById(R.id.editTextTitle);
+        editTextDescription = findViewById(R.id.editIncidentDescription);
+        buttonSubmitReport = findViewById(R.id.btnSubmitIncident);
+        progressBar = findViewById(R.id.progressBarSubmitReport);
 
         // Initialize OpenStreetMap
         Configuration.getInstance().setUserAgentValue(getApplicationContext().getPackageName());
@@ -61,57 +85,16 @@ public class ReportIncidentActivity extends AppCompatActivity {
         // Initialize location tracking
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         requestLocationUpdates();
+
+        // Submit Report Button Click
+        buttonSubmitReport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SubmitIncidentReport();
+            }
+        });
     }
-//    private void submitIncidentReport() {
-//        EditText editTextTitle = findViewById(R.id.editIncidentDescription);
-//        String title = editTextTitle.getText().toString().trim();
-//        String description = editTextDescription.getText().toString().trim();
-//        String location = editTextLocation.getText().toString().trim();
-//
-//        if (TextUtils.isEmpty(title)) {
-//            editTextTitle.setError("Title is required");
-//            return;
-//        }
-//        if (TextUtils.isEmpty(description)) {
-//            editTextDescription.setError("Description is required");
-//            return;
-//        }
-//        if (TextUtils.isEmpty(location)) {
-//            editTextLocation.setError("Location is required");
-//            return;
-//        }
-//
-//        progressBar.setVisibility(View.VISIBLE);
-//
-//        // Get user ID
-//        String userId = auth.getCurrentUser() != null ? auth.getCurrentUser().getUid() : "Unknown";
-//
-//        // Create Incident Report Data
-//        Map<String, Object> report = new HashMap<>();
-//        report.put("title", title);
-//        report.put("description", description);
-//        report.put("location", location);
-//        report.put("timestamp", Timestamp.now());
-//        report.put("reportedBy", userId);
-//
-//        // Save to Firestore
-//        firestore.collection("incident_reports")
-//                .add(report)
-//                .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<DocumentReference> task) {
-//                        progressBar.setVisibility(View.GONE);
-//                        if (task.isSuccessful()) {
-//                            Toast.makeText(IncidentReportActivity.this, "Report Submitted!", Toast.LENGTH_SHORT).show();
-//                            editTextTitle.setText("");
-//                            editTextDescription.setText("");
-//                            editTextLocation.setText("");
-//                        } else {
-//                            Toast.makeText(IncidentReportActivity.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
-//                        }
-//                    }
-//                });
-//    }
+
     private void requestLocationUpdates() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -128,7 +111,9 @@ public class ReportIncidentActivity extends AppCompatActivity {
             @Override
             public void onLocationResult(@NonNull LocationResult locationResult) {
                 for (Location location : locationResult.getLocations()) {
-                    updateGuardLocation(location.getLatitude(), location.getLongitude());
+                    currentLatitude = location.getLatitude();
+                    currentLongitude = location.getLongitude();
+                    updateGuardLocation(currentLatitude, currentLongitude);
                 }
             }
         };
@@ -140,8 +125,11 @@ public class ReportIncidentActivity extends AppCompatActivity {
         Log.d("GuardTracking", "Updated Location: " + latitude + ", " + longitude);
 
         // Update Firestore
+        Map<String, Object> locationData = new HashMap<>();
+        locationData.put("latitude", latitude);
+        locationData.put("longitude", longitude);
         firestore.collection("Users").document(guardId)
-                .set(new GuardLocation(latitude, longitude));
+                .set(locationData);
 
         // Update UI
         updateMap(latitude, longitude);
@@ -161,6 +149,47 @@ public class ReportIncidentActivity extends AppCompatActivity {
         marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
         mapView.getOverlays().add(marker);
         mapView.invalidate(); // Refresh map
+    }
+
+    private void SubmitIncidentReport() {
+        String title = editTextTitle.getText().toString().trim();
+        String description = editTextDescription.getText().toString().trim();
+
+        if (TextUtils.isEmpty(title)) {
+            editTextTitle.setError("Title is required");
+            return;
+        }
+        if (TextUtils.isEmpty(description)) {
+            editTextDescription.setError("Description is required");
+            return;
+        }
+
+        progressBar.setVisibility(View.VISIBLE);
+
+        // Get user ID
+        String userId = auth.getCurrentUser() != null ? auth.getCurrentUser().getUid() : guardId;
+
+        // Create Incident Report Data
+        Map<String, Object> report = new HashMap<>();
+        report.put("title", title);
+        report.put("description", description);
+        report.put("latitude", currentLatitude);
+        report.put("longitude", currentLongitude);
+        report.put("reportedBy", userId);
+
+        // Save to Firestore
+        firestore.collection("incident_reports")
+                .add(report)
+                .addOnCompleteListener(task -> {
+                    progressBar.setVisibility(View.GONE);
+                    if (task.isSuccessful()) {
+                        Toast.makeText(ReportIncidentActivity.this, "Report Submitted!", Toast.LENGTH_SHORT).show();
+                        editTextTitle.setText("");
+                        editTextDescription.setText("");
+                    } else {
+                        Toast.makeText(ReportIncidentActivity.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 
     @Override

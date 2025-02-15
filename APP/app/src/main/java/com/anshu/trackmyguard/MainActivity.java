@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, AdminRegisterActivity.class));
-                finish();
+                //finish();
             }
         });
         //admin Login
@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this,AdminLoginActivity.class));
-                finish();
+                //finish();
 
             }
         });

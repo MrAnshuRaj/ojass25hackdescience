@@ -1,24 +1,28 @@
 package com.anshu.trackmyguard;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -31,13 +35,27 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import org.osmdroid.config.Configuration;
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.api.IMapController;
+import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.Marker;
+import java.util.HashMap;
+
 public class GuardDashboard extends AppCompatActivity {
     private static final int LOCATION_PERMISSION_REQUEST = 1001;
-
+    private static final double GEOFENCE_RADIUS = 200.0; // 200 meters
+    private static final int LOCATION_UPDATE_INTERVAL = 2 * 60 * 1000;
+    private double dutyLatitude = 29.7770167;  // Replace with actual duty location latitude
+    private double dutyLongitude = 88.144115;
+    private boolean isOutsideZone = false;
+    private Handler handler = new Handler();
     private Button startDutyBtn, stopDutyBtn, reportIncidentBtn;
     private TextView statusText;
     private boolean isOnDuty = false;
-
+    MapView mapView;
+    IMapController mapController;
     private FirebaseFirestore db;
     private FirebaseUser user;
     private FusedLocationProviderClient fusedLocationProviderClient;
@@ -55,7 +73,7 @@ public class GuardDashboard extends AppCompatActivity {
         });
         db = FirebaseFirestore.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
-
+        createNotificationChannel();
         if (user == null) {
             Toast.makeText(this, "User not logged in!", Toast.LENGTH_SHORT).show();
             finish();
@@ -83,11 +101,17 @@ public class GuardDashboard extends AppCompatActivity {
 
         // Stop Duty Button Click
         stopDutyBtn.setOnClickListener(v -> stopDuty());
+        mapView=findViewById(R.id.mapViewGuard);
+        Configuration.getInstance().setUserAgentValue(getApplicationContext().getPackageName());
+        mapView.setTileSource(TileSourceFactory.MAPNIK);
+        mapView.setMultiTouchControls(true);
+        mapController = mapView.getController();
+        mapController.setZoom(15.0);
     }
     private void setupLocationUpdates() {
         locationRequest = LocationRequest.create();
-        locationRequest.setInterval(5000);
-        locationRequest.setFastestInterval(2000);
+        locationRequest.setInterval(5000)
+                .setFastestInterval(1000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         locationCallback = new LocationCallback() {
@@ -97,8 +121,25 @@ public class GuardDashboard extends AppCompatActivity {
 
                 Location location = locationResult.getLastLocation();
                 updateGuardLocation(location.getLatitude(), location.getLongitude());
+                updateMap(location.getLatitude(), location.getLongitude());
+                checkGeofence(location.getLatitude(), location.getLongitude(),dutyLatitude,dutyLongitude);
             }
         };
+    }
+    private void updateMap(double latitude, double longitude) {
+        runOnUiThread(() -> {
+            mapView.getOverlays().clear();
+
+            GeoPoint geoPoint = new GeoPoint(latitude, longitude);
+            Marker marker = new Marker(mapView);
+            marker.setPosition(geoPoint);
+            marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+            marker.setTitle("Your Location");
+
+            mapView.getOverlays().add(marker);
+            mapView.getController().setCenter(geoPoint);
+            mapView.invalidate();
+        });
     }
 
     private void startDuty() {
@@ -158,4 +199,60 @@ public class GuardDashboard extends AppCompatActivity {
             }
         }
     }
+    private void checkGeofence(double latitude, double longitude, double assignedLat, double assignedLon) {
+        String guardId = user.getUid();
+        float[] results = new float[1];
+        Location.distanceBetween(latitude, longitude, assignedLat, assignedLon, results);
+        float distanceInMeters = results[0];
+        Toast.makeText(this,"Distance: "+distanceInMeters+" meters",Toast.LENGTH_SHORT).show();
+        if (distanceInMeters > 200) {
+            Toast.makeText(this,"Outside Zone",Toast.LENGTH_SHORT).show();
+            sendGuardNotification("⚠️ You are outside your duty area!");
+            GuardAttendance attendance = new GuardAttendance(guardId,latitude,longitude,true);
+            db.collection("GuardAttendance").document(guardId)
+                    .set(attendance);
+
+            // Start countdown for supervisor alert
+            new Handler().postDelayed(() -> checkIfStillOutOfZone(guardId), 300000); // 5 min
+        }
+    }
+
+    private void checkIfStillOutOfZone(String guardId) {
+        db.collection("GuardAttendance").document(guardId).get()
+                .addOnSuccessListener(doc -> {
+                    if (doc.exists() && doc.getBoolean("outOfZone")) {
+                        notifySupervisor("🚨 Guard " + guardId + " is still out of duty area!");
+                    }
+                });
+    }
+    private void notifySupervisor(String message) {
+        db.collection("SupervisorAlerts").add(new HashMap<String, Object>() {{
+            put("message", message);
+            put("timestamp", System.currentTimeMillis());
+        }});
+    }
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                    "geofence_alert",
+                    "Geofence Alerts",
+                    NotificationManager.IMPORTANCE_HIGH);
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            if (manager != null) {
+                manager.createNotificationChannel(channel);
+            }
+        }
+    }
+
+    private void sendGuardNotification(String message) {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "GeofenceAlerts")
+                .setSmallIcon(R.drawable.baseline_add_alert_24)
+                .setContentTitle("Geofence Alert")
+                .setContentText(message)
+                .setPriority(NotificationCompat.PRIORITY_HIGH);
+
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.notify(1, builder.build());
+    }
+
 }

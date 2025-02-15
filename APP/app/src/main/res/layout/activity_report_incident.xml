@@ -18,6 +18,16 @@
         android:textColor="@color/orange" />
 
     <EditText
+        android:id="@+id/editTextTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Incident Title"
+        android:layout_marginTop="8dp"
+        android:inputType="textMultiLine"
+        android:minHeight="20dp"
+        android:padding="10dp"
+        android:background="@drawable/input_bg"/>
+    <EditText
         android:id="@+id/editIncidentDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -63,4 +73,11 @@
         android:layout_height="wrap_content"
         android:text="Submit Report"
         android:backgroundTint="@color/black" />
+
+    <ProgressBar
+        android:id="@+id/progressBarSubmitReport"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible" />
 </LinearLayout>
