@@ -1,11 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
-import guardsReducer from "./slices/guardsSlice";
-import incidentsReducer from "./slices/incidentsSlice";
+import authReducer from "./authSlice";
+import guardReducer from "./guardSlice";
+import dutyReducer from "./dutySlice";
+import reportReducer from "./reportSlice";
 
 const store = configureStore({
   reducer: {
-    guards: guardsReducer,
-    incidents: incidentsReducer,
+    auth: authReducer,
+    guards: guardReducer,
+    duties: dutyReducer,
+    reports: reportReducer,
   },
 });
 
