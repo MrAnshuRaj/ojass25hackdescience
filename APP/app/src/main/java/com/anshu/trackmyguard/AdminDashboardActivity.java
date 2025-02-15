@@ -50,12 +50,12 @@ public class AdminDashboardActivity extends AppCompatActivity {
                 });
         // Initialize feature list
         featureList = new ArrayList<>();
-        featureList.add(new DashboardFeature("Security Guard Database 📋", R.drawable.logo_tmg, GuardDatabaseActivity.class));
-        featureList.add(new DashboardFeature("Live Guard Location Tracking 📍",  R.drawable.logo_tmg, LiveTrackingActivity.class));
-        featureList.add(new DashboardFeature("Assign & Rotate Guards 🔄",  R.drawable.logo_tmg, AssignGuardsActivity.class));
-        featureList.add(new DashboardFeature("Shift & Attendance Monitoring ⏳", R.drawable.logo_tmg, AttendanceActivity.class));
-        featureList.add(new DashboardFeature("Incident Reporting 🚨",  R.drawable.logo_tmg, IncidentReportingActivity.class));
-        featureList.add(new DashboardFeature("Guard Performance & Feedback ⭐",  R.drawable.logo_tmg, FeedbackActivity.class));
+        featureList.add(new DashboardFeature("Security Guard Database 📋", R.drawable.database, GuardDatabaseActivity.class));
+        featureList.add(new DashboardFeature("Live Guard Location Tracking 📍",  R.drawable.map, LiveTrackingActivity.class));
+        featureList.add(new DashboardFeature("Assign & Rotate Guards 🔄",  R.drawable.delegation, AssignGuardsActivity.class));
+        featureList.add(new DashboardFeature("Shift & Attendance Monitoring ⏳", R.drawable.attendance, AttendanceActivity.class));
+        featureList.add(new DashboardFeature("Incident Reporting 🚨",  R.drawable.warning, IncidentReportingActivity.class));
+        //featureList.add(new DashboardFeature("Guard Performance & Feedback ⭐",  R.drawable.logo_tmg, FeedbackActivity.class));
 
         adapter = new DashboardAdapter(this, featureList);
         recyclerView.setAdapter(adapter);
