@@ -1,14 +1,21 @@
 package com.anshu.trackmyguard;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -18,7 +25,7 @@ public class GuardDatabaseActivity extends AppCompatActivity {
     private GuardAdapter adapter;
     private List<Guard> guardList;
     private FirebaseFirestore db;
-
+    private String adminOrg;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,28 +36,56 @@ public class GuardDatabaseActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         recyclerView = findViewById(R.id.recyclerViewGuards);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         db = FirebaseFirestore.getInstance();
         guardList = new ArrayList<>();
-        guardList.add(new Guard("Dheeraj",25,"Google_guard","Hostel H","Amazon_guard",
-                "https://firebasestorage.googleapis.com/v0/b/antakshari-75fe9.appspot.com/o/uploads%2F1723835750958.jpeg?alt=media&token=ed6876d9-06c9-4dcd-adf1-d49d1e3431c7"));
-        guardList.add(new Guard("Anshu",25,"Google_guard","Hostel I","Amazon_guard",
-                "https://firebasestorage.googleapis.com/v0/b/antakshari-75fe9.appspot.com/o/uploads%2F1723835750958.jpeg?alt=media&token=ed6876d9-06c9-4dcd-adf1-d49d1e3431c7"));
-        guardList.add(new Guard("Mayank",25,"Google_guard","Hostel J","Amazon_guard",
-                "https://firebasestorage.googleapis.com/v0/b/antakshari-75fe9.appspot.com/o/uploads%2F1723835750958.jpeg?alt=media&token=ed6876d9-06c9-4dcd-adf1-d49d1e3431c7"));
-        guardList.add(new Guard("Rohit",25,"Google_guard","Hostel K","Amazon_guard",
-                "https://firebasestorage.googleapis.com/v0/b/antakshari-75fe9.appspot.com/o/uploads%2F1723835750958.jpeg?alt=media&token=ed6876d9-06c9-4dcd-adf1-d49d1e3431c7"));
         adapter = new GuardAdapter(this, guardList);
         recyclerView.setAdapter(adapter);
+        db.collection("admins")
+                .document(FirebaseAuth.getInstance().getUid())
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        adminOrg = documentSnapshot.getString("organization");
+                        if (adminOrg != null) {
+                            fetchGuardsFromFirestore();
+                        }
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Failed to fetch admin organization", Toast.LENGTH_SHORT).show();
+                });
 
-        db.collection("guards").get().addOnSuccessListener(queryDocumentSnapshots -> {
-            for (DocumentSnapshot doc : queryDocumentSnapshots) {
-                Guard guard = doc.toObject(Guard.class);
-                guardList.add(guard);
-            }
-            adapter.notifyDataSetChanged();
-        });
+    }
+
+    private void fetchGuardsFromFirestore() {
+        db.collection("Users")
+                .whereEqualTo("role", "guard")
+                .whereEqualTo("organization", adminOrg)
+                .addSnapshotListener((snapshot, error) -> {
+                    if (error != null) {
+                        Log.e("Firestore Error", Objects.requireNonNull(error.getMessage()));
+                        return;
+                    }
+
+                    guardList.clear();
+                    for (DocumentSnapshot doc : snapshot) {
+                        try {
+                            String name = doc.getString("username");
+                            String phone = doc.getString("phone");
+                            String organization = doc.getString("organization");
+                            boolean isVerified = Boolean.TRUE.equals(doc.getBoolean("isVerified"));
+                            int age = doc.contains("age") ? doc.getLong("age").intValue() : 0; // Safe conversion
+
+                            guardList.add(new Guard(doc.getId(), name, age, phone, organization,isVerified));
+                        } catch (Exception e) {
+                            Log.e("Data Error", "Error parsing document: " + e.getMessage());
+                        }
+                    }
+                    adapter.notifyDataSetChanged();
+                });
     }
 }

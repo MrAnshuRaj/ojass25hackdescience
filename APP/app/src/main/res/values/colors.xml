@@ -3,6 +3,15 @@
     <color name="black">#FF000000</color>
     <color name="white">#F1F1F1</color>
     <color name="orange">#FF5722</color>
+    <color name="reportTextClr">#FF5722</color>
     <color name="gray">#8F8F8F</color>
     <color name="light_gray">#F3F3F3</color>
+    <color name="colorBackgroundDatabase">#FFF5E1</color>
+    <color name="colorDBField">#fff</color>
+    <color name="btnTextClr">#fff</color>
+    <color name="rvIncRep">#FFFFFF</color>
+    <color name="HeadingWelcome">#400000</color>
+    <color name="loginBack">#fff</color>
+    <color name="statusText">#000</color>
+
 </resources>

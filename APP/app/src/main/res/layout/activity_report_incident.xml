@@ -12,57 +12,73 @@
         android:id="@+id/textIncidentTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:text="Report an Incident"
+        android:textColor="@color/reportTextClr"
         android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="@color/orange" />
+        android:textStyle="bold" />
 
     <EditText
         android:id="@+id/editTextTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Incident Title"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/input_bg"
+        android:hint="Incident Title"
         android:inputType="textMultiLine"
         android:minHeight="20dp"
-        android:padding="10dp"
-        android:background="@drawable/input_bg"/>
+        android:padding="10dp" />
+
     <EditText
         android:id="@+id/editIncidentDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Describe the incident"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/input_bg"
+        android:hint="Describe the incident"
         android:inputType="textMultiLine"
         android:minHeight="100dp"
-        android:padding="10dp"
-        android:background="@drawable/input_bg"/>
+        android:padding="10dp" />
 
     <Spinner
         android:id="@+id/spinnerIncidentType"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
-        android:layout_height="wrap_content" />
+        android:layout_marginRight="8dp" />
 
     <TextView
         android:id="@+id/textLocation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:paddingTop="5dp"
         android:text="Fetching location..."
-        android:textStyle="italic"
-        android:paddingTop="5dp" />
+        android:textStyle="italic" />
 
     <org.osmdroid.views.MapView
         android:id="@+id/mapIncidentLocation"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_marginTop="8dp" />
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="8dp" />
 
     <Button
         android:id="@+id/btnCaptureImage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:textColor="@color/btnTextClr"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:text="Capture Image"
         android:backgroundTint="@color/orange" />
 
@@ -71,6 +87,9 @@
         android:layout_width="match_parent"
         android:layout_marginTop="8dp"
         android:layout_height="wrap_content"
+        android:textColor="@color/btnTextClr"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:text="Submit Report"
         android:backgroundTint="@color/black" />
 
@@ -78,6 +97,7 @@
         android:id="@+id/progressBarSubmitReport"
         style="?android:attr/progressBarStyle"
         android:layout_width="match_parent"
+        android:layout_marginTop="8dp"
         android:layout_height="wrap_content"
         android:visibility="invisible" />
 </LinearLayout>

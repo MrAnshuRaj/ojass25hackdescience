@@ -27,6 +27,7 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.osmdroid.config.Configuration;
@@ -136,21 +137,27 @@ public class ReportIncidentActivity extends AppCompatActivity {
     }
 
     private void updateMap(double latitude, double longitude) {
-        GeoPoint guardLocation = new GeoPoint(latitude, longitude); // Corrected class name
-        mapView.getController().setCenter(guardLocation);
-        mapView.getController().setZoom(18.0);
+        if (mapView != null && mapView.getRepository() != null) {
+            GeoPoint guardLocation = new GeoPoint(latitude, longitude); // Corrected class name
+            mapView.getController().setCenter(guardLocation);
+            mapView.getController().setZoom(18.0);
 
-        // Remove existing markers
-        mapView.getOverlays().clear();
+            // Remove existing markers
+            mapView.getOverlays().clear();
 
-        Marker marker = new Marker(mapView);
-        marker.setPosition(guardLocation);
-        marker.setTitle("Guard Location");
-        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-        mapView.getOverlays().add(marker);
-        mapView.invalidate(); // Refresh map
+            Marker marker = new Marker(mapView);
+            marker.setPosition(guardLocation);
+            marker.setTitle("Guard Location");
+            marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+            mapView.getOverlays().add(marker);
+            mapView.invalidate(); // Refresh map
+        }
     }
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mapView = null; // clear mapView reference
+    }
     private void SubmitIncidentReport() {
         String title = editTextTitle.getText().toString().trim();
         String description = editTextDescription.getText().toString().trim();
@@ -176,7 +183,7 @@ public class ReportIncidentActivity extends AppCompatActivity {
         report.put("latitude", currentLatitude);
         report.put("longitude", currentLongitude);
         report.put("reportedBy", userId);
-
+        report.put("timestamp", FieldValue.serverTimestamp());
         // Save to Firestore
         firestore.collection("incident_reports")
                 .add(report)

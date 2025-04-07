@@ -53,7 +53,7 @@ public class AttendanceActivity extends AppCompatActivity {
                 setZoom(15.0);
         mapController=mapView.getController();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new AttendanceAdapter(guardList);
+        adapter = new AttendanceAdapter(guardList, this);
         recyclerView.setAdapter(adapter);
 
         firestore = FirebaseFirestore.getInstance();

@@ -26,8 +26,7 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/user"
-               />
+                android:src="@drawable/user"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -55,31 +54,47 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/tvPastWork"
+            android:id="@+id/tvOrganization"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Past Work: Ex-Army"
-            android:textSize="14sp"
-            android:textColor="@android:color/black"
-            android:layout_marginTop="6dp"/>
-
-        <TextView
-            android:id="@+id/tvResidence"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Residence: New York"
+            android:text="Organization : NITJSR"
             android:textSize="14sp"
             android:textColor="@android:color/black"
             android:layout_marginTop="4dp"/>
 
         <TextView
-            android:id="@+id/tvCurrentDeployment"
+            android:id="@+id/tvPhoneNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Deployment: ABC Apartment, Night Shift"
+            android:text="Phone Number : 9939747627"
             android:textSize="14sp"
             android:textColor="@android:color/black"
             android:layout_marginTop="4dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="end"
+            android:layout_marginTop="8dp">
+
+            <Button
+                android:id="@+id/btnEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/btnTextClr"
+                android:backgroundTint="@color/black"
+                android:text="Edit"/>
+
+            <Button
+                android:id="@+id/btnDelete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/black"
+                android:textColor="@color/btnTextClr"
+                android:text="Delete"
+                android:layout_marginStart="8dp"/>
+        </LinearLayout>
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

@@ -1,6 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="10dp">
 
@@ -26,6 +27,55 @@
         android:gravity="center"
         android:padding="10dp" />
 
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipGroupFilter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:selectionRequired="true"
+        app:singleSelection="true">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipToday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="3dp"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:text="Today" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip3Days"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="3dp"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:text="Past 3 Days" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipWeek"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="3dp"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:text="This Week" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipMonth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="3dp"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:text="This Month" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipYear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="3dp"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:text="This Year" />
+    </com.google.android.material.chip.ChipGroup>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
@@ -41,6 +91,8 @@
 
     <TextView
         android:id="@+id/emptyTV"
+        android:text="No incidents"
+        android:visibility="invisible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

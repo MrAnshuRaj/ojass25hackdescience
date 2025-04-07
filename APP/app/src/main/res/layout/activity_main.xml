@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:background="@color/white"
+    android:background="@color/loginBack"
     android:id="@+id/main"
     >
 
@@ -12,7 +12,7 @@
     <ImageView
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:src="@drawable/logo_tmg"
+        android:src="@drawable/icon"
         android:layout_gravity="center"
         android:contentDescription="App Logo"/>
 
@@ -78,12 +78,12 @@
         android:id="@+id/btnLogin"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@drawable/btn_bg"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
+        android:background="@drawable/btn_bg"
         android:backgroundTint="@color/orange"
         android:text="Login"
-        android:textColor="@color/white"
+        android:textColor="@color/btnTextClr"
         android:textSize="18sp" />
 
     <!-- Social Media Login -->

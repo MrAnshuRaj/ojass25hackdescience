@@ -1,33 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:background="@color/loginBack"
     android:gravity="center"
-    android:id="@+id/main"
-    android:background="@color/white">
+    android:orientation="vertical">
 
-    <!-- Logo -->
     <ImageView
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:src="@drawable/logo_tmg"
         android:layout_gravity="center"
-        android:contentDescription="App Logo"/>
+        android:contentDescription="App Logo"
+        android:src="@drawable/logo_tmg" />
 
-    <!-- Create Account Text -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Create Account"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
         android:gravity="center"
-        android:paddingTop="10dp"/>
+        android:paddingTop="10dp"
+        android:text="Create Account"
+        android:textColor="@color/statusText"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
-    <!-- Registration Form -->
     <EditText
         android:id="@+id/user_name"
         android:layout_width="match_parent"
@@ -35,20 +32,45 @@
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginRight="8dp"
-        android:drawableStart="@drawable/baseline_drive_file_rename_outline_24"
         android:background="@drawable/input_bg"
+        android:drawableStart="@drawable/baseline_drive_file_rename_outline_24"
         android:hint="Name"
         android:padding="10dp" />
+
+    <Spinner
+        android:id="@+id/spinnerOrganization"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/input_bg"
+        android:minHeight="48dp"
+        android:layout_height="wrap_content"
+        android:spinnerMode="dropdown"
+        android:layout_marginTop="8dp"/>
+
     <EditText
-        android:id="@+id/organization"
+        android:id="@+id/tvGuardAge"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginRight="8dp"
-        android:drawableStart="@drawable/baseline_account_circle_24"
         android:background="@drawable/input_bg"
-        android:hint="Organization Name"
+        android:drawableStart="@drawable/baseline_account_circle_24"
+        android:hint="Age"
+        android:padding="10dp" />
+
+    <EditText
+        android:id="@+id/tvPhoneNumber"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/input_bg"
+        android:drawableStart="@drawable/baseline_contact_phone_24"
+        android:hint="Phone Number"
+        android:inputType="phone"
         android:padding="10dp" />
 
     <EditText
@@ -58,8 +80,8 @@
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginRight="8dp"
-        android:drawableStart="@drawable/baseline_email_24"
         android:background="@drawable/input_bg"
+        android:drawableStart="@drawable/baseline_email_24"
         android:hint="Email ID"
         android:padding="10dp" />
 
@@ -77,37 +99,20 @@
         android:inputType="textPassword"
         android:padding="10dp" />
 
-    <CheckBox
-        android:id="@+id/checkbox_terms"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="I Read and agree to"
-        android:textColor="@color/black"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Terms and Conditions"
-        android:textColor="@color/orange"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:onClick="openTerms"
-        android:paddingStart="5dp"/>
 
     <!-- Register Button -->
     <Button
         android:id="@+id/btnRegister"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="Register Now"
-        android:textColor="@color/white"
-        android:backgroundTint="@color/orange"
-        android:layout_marginRight="8dp"
         android:layout_marginLeft="8dp"
-        android:textSize="18sp"/>
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:backgroundTint="@color/orange"
+        android:text="Register Now"
+        android:textColor="@color/btnTextClr"
+        android:textSize="18sp" />
 
 
     <!-- Login Link -->
@@ -116,10 +121,10 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:onClick="openLoginActivity"
-        android:textStyle="bold"
         android:padding="10dp"
         android:text="Already have an account? Login"
-        android:textColor="@color/orange"
-        android:textSize="16sp" />
+        android:textColor="@color/reportTextClr"
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
 </LinearLayout>

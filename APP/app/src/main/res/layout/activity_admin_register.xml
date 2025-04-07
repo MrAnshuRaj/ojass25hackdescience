@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFF5E1"
-    android:id="@+id/main"
+    android:background="@color/colorBackgroundDatabase"
     tools:context=".AdminRegisterActivity">
 
     <!-- Toolbar -->
@@ -100,27 +99,27 @@
         android:id="@+id/btnAdminRegister"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Register Now"
+        android:layout_margin="16dp"
         android:backgroundTint="@color/orange"
-        android:textColor="@android:color/white"
         android:padding="12dp"
+        android:text="Register Now"
+        android:textColor="@color/btnTextClr"
         android:textSize="18sp"
-        app:layout_constraintTop_toBottomOf="@id/etAdminConfirmPassword"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="16dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etAdminConfirmPassword" />
 
     <TextView
         android:id="@+id/tvLoginRedirect"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:text="Already have an account? Login"
-        android:textColor="@color/orange"
+        android:textColor="@color/reportTextClr"
         android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/btnAdminRegister"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnAdminRegister" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

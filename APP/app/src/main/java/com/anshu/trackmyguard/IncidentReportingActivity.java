@@ -1,5 +1,6 @@
 package com.anshu.trackmyguard;
 
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,7 +12,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
+import com.anshu.trackmyguard.DateUtils;
+import com.google.android.material.chip.ChipGroup;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -26,6 +29,8 @@ import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class IncidentReportingActivity extends AppCompatActivity {
@@ -37,36 +42,72 @@ public class IncidentReportingActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private TextView emptyTextView;
     private IMapController mapController;
+    ChipGroup chipGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_incident_reporting);
-
-        // Initialize UI elements
         mapView = findViewById(R.id.mapView);
         recyclerView = findViewById(R.id.recyclerView);
         progressBar = findViewById(R.id.progressBar2);
         emptyTextView = findViewById(R.id.emptyTV);
-
-        // Firestore
         firestore = FirebaseFirestore.getInstance();
-
-        // Configure RecyclerView
         incidentList = new ArrayList<>();
         incidentAdapter = new IncidentAdapter(incidentList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(incidentAdapter);
+        chipGroup = findViewById(R.id.chipGroupFilter);
 
-        // Configure OpenStreetMap
+        chipGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            Date now = new Date();
+            Date startDate = null;
+
+            if (checkedId == R.id.chipToday) {
+                startDate = DateUtils.getStartOfDay(now);
+            } else if (checkedId == R.id.chip3Days) {
+                startDate = DateUtils.getNDaysAgo(3);
+            } else if (checkedId == R.id.chipWeek) {
+                startDate = DateUtils.getNDaysAgo(7);
+            } else if (checkedId == R.id.chipMonth) {
+                startDate = DateUtils.getNDaysAgo(30);
+            } else if (checkedId == R.id.chipYear) {
+                startDate = DateUtils.getNDaysAgo(365);
+            }
+
+            if (startDate != null) {
+                queryIncidentsBetween(startDate, now);
+            }
+        });
+
         Configuration.getInstance().setUserAgentValue(getApplicationContext().getPackageName());
         mapView.setTileSource(TileSourceFactory.MAPNIK);
         mapView.setMultiTouchControls(true);
         mapController = mapView.getController();
         mapController.setZoom(15.0);
-
-        // Fetch incident data
         fetchIncidentReports();
+    }
+    private void queryIncidentsBetween(Date start, Date end) {
+        FirebaseFirestore.getInstance()
+                .collection("incident_reports")
+                .whereGreaterThanOrEqualTo("timestamp", start)
+                .whereLessThanOrEqualTo("timestamp", end)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    List<Incident> filteredList = new ArrayList<>();
+                    for (DocumentSnapshot doc : queryDocumentSnapshots) {
+                        Incident incident = doc.toObject(Incident.class);
+                        filteredList.add(incident);
+                        addIncidentMarker(incident.getLatitude(), incident.getLongitude(), incident.getTitle());
+                    }
+                    incidentList.clear();
+                    progressBar.setVisibility(View.VISIBLE);
+                    incidentList.addAll(filteredList);
+                    incidentAdapter.notifyDataSetChanged();
+                    progressBar.setVisibility(View.GONE);
+                    emptyTextView.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
+                });
     }
 
     private void fetchIncidentReports() {
@@ -89,7 +130,7 @@ public class IncidentReportingActivity extends AppCompatActivity {
                 }
 
                 incidentList.clear();
-                mapView.getOverlays().clear(); // Remove old markers
+                mapView.getOverlays().clear();
 
                 for (QueryDocumentSnapshot doc : snapshot) {
                     Incident incident = doc.toObject(Incident.class);
@@ -97,7 +138,6 @@ public class IncidentReportingActivity extends AppCompatActivity {
                     addIncidentMarker(incident.getLatitude(), incident.getLongitude(), incident.getTitle());
                 }
 
-                // Notify adapter & update UI
                 incidentAdapter.notifyDataSetChanged();
                 progressBar.setVisibility(View.GONE);
                 emptyTextView.setVisibility(View.GONE);

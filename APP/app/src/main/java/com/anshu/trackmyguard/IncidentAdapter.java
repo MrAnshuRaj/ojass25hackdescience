@@ -8,7 +8,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class IncidentAdapter extends RecyclerView.Adapter<IncidentAdapter.IncidentViewHolder> {
     private List<Incident> incidentList;
@@ -29,6 +31,13 @@ public class IncidentAdapter extends RecyclerView.Adapter<IncidentAdapter.Incide
         Incident incident = incidentList.get(position);
         holder.title.setText(incident.getTitle());
         holder.description.setText(incident.getDescription());
+        if (incident.getTimestamp() != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy, hh:mm a", Locale.getDefault());
+            String formattedTime = sdf.format(incident.getTimestamp());
+            holder.timestamp.setText(formattedTime);
+        } else {
+            holder.timestamp.setText("Date not available");
+        }
     }
 
     @Override

@@ -22,7 +22,7 @@
             android:contentDescription="Status Icon"/>
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="258dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical">
@@ -32,24 +32,29 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Guard Name"
-                android:textStyle="bold"
-                android:textSize="16sp"/>
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textGuardLocation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="📍 Location"
-                android:textSize="14sp"/>
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/textStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Status"
-                android:textSize="14sp"
-                android:textColor="@android:color/holo_red_dark"/>
+                android:textSize="14sp" />
         </LinearLayout>
 
+        <ImageButton
+            android:id="@+id/btnCallBtn"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="#00FFFFFF"
+            android:src="@drawable/baseline_call_24" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

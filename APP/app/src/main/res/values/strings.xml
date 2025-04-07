@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">TrackMyGuard</string>
+    <string name="admin_approve_text">Your account is pending verification.\nPlease wait for admin approval</string>
 </resources>

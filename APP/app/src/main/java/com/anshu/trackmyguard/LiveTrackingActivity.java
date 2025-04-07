@@ -4,12 +4,14 @@ import android.os.Bundle;
 import android.os.Bundle;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -42,7 +44,6 @@ public class LiveTrackingActivity extends AppCompatActivity {
             return insets;
         });
         db = FirebaseFirestore.getInstance();
-
         // Initialize OSM Map
         mapView = findViewById(R.id.mapView);
         Configuration.getInstance().setUserAgentValue(getApplicationContext().getPackageName());
@@ -72,7 +73,7 @@ public class LiveTrackingActivity extends AppCompatActivity {
                                 double latitude = Objects.requireNonNull(doc.getDouble("latitude"));
                                 double longitude = Objects.requireNonNull(doc.getDouble("longitude"));
                                 String guardName = doc.getString("username");
-                                Toast.makeText(LiveTrackingActivity.this, "Lat "+latitude+"long "+longitude, Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(LiveTrackingActivity.this, "Lat "+latitude+"long "+longitude, Toast.LENGTH_SHORT).show();
                                 // Set the guard's location on map
                                 GeoPoint guardLocation = new GeoPoint(latitude, longitude);
                                 Marker guardMarker = new Marker(mapView);

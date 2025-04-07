@@ -1,25 +1,42 @@
 package com.anshu.trackmyguard;
 
-
 public class Guard {
-    private String name, pastWork, residence, currentDeployment, photoUrl;
+    private String id;
+    private String username;
+    private String phone;
+    private String organization;
     private int age;
+    private boolean isVerified;
 
-    public Guard() { } // Required for Firestore
+    // Empty constructor required for Firestore
+    public Guard() { }
 
-    public Guard(String name, int age, String pastWork, String residence, String currentDeployment, String photoUrl) {
-        this.name = name;
+    public Guard(String id, String username, int age, String phone, String organization,boolean verified) {
+        this.id = id;
+        this.username = username;
         this.age = age;
-        this.pastWork = pastWork;
-        this.residence = residence;
-        this.currentDeployment = currentDeployment;
-        this.photoUrl = photoUrl;
+        this.phone = phone;
+        this.organization = organization;
+        this.isVerified = verified;
     }
 
-    public String getName() { return name; }
+    // Getter and Setter for ID
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+
+    // Getters and Setters for other fields
+    public String getUserName() { return username; }
+    public void setUserName(String name) { this.username = name; }
+
     public int getAge() { return age; }
-    public String getPastWork() { return pastWork; }
-    public String getResidence() { return residence; }
-    public String getCurrentDeployment() { return currentDeployment; }
-    public String getPhotoUrl() { return photoUrl; }
+    public void setAge(int age) { this.age = age; }
+
+    public String getPhone() { return phone; }
+    public void setPhone(String phone) { this.phone = phone; }
+
+    public String getOrganization() { return organization; }
+    public void setOrganization(String organization) { this.organization = organization; }
+    public boolean isVerified() { return isVerified; }
+
+    public void setVerified(boolean verified) { this.isVerified = verified; }
 }

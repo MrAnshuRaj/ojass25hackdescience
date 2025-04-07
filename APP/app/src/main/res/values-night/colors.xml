@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="orange">#242424</color>
+    <color name="colorBackgroundDatabase">#393939</color>
+    <color name="colorDBField">#4D4D4D</color>
+    <color name="btnTextClr">#ADADAD</color>
+    <color name="rvIncRep">#888888</color>
+    <color name="HeadingWelcome">#FFB8B8</color>
+    <color name="loginBack">#525252</color>
+    <color name="statusText">#fff</color>
+    <color name="reportTextClr">#D6D6D6</color>
+</resources>

@@ -1,6 +1,8 @@
 package com.anshu.trackmyguard;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +27,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
     private List<DashboardFeature> featureList;
     TextView admin_name;
     private MapView mapView;
+    Button logout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +44,12 @@ public class AdminDashboardActivity extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseAuth auth = FirebaseAuth.getInstance();
         String uid = auth.getUid();
+        logout=findViewById(R.id.btnLogOut);
+        logout.setOnClickListener(v -> {
+            auth.signOut();
+            startActivity(new Intent(AdminDashboardActivity.this, MainActivity.class));
+            finish();
+        });
         db.collection("admins").document(uid).get().addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
                         String name = documentSnapshot.getString("name");
@@ -50,11 +59,12 @@ public class AdminDashboardActivity extends AppCompatActivity {
                 });
         // Initialize feature list
         featureList = new ArrayList<>();
-        featureList.add(new DashboardFeature("Security Guard Database 📋", R.drawable.database, GuardDatabaseActivity.class));
-        featureList.add(new DashboardFeature("Live Guard Location Tracking 📍",  R.drawable.map, LiveTrackingActivity.class));
-        featureList.add(new DashboardFeature("Assign & Rotate Guards 🔄",  R.drawable.delegation, AssignGuardsActivity.class));
-        featureList.add(new DashboardFeature("Shift & Attendance Monitoring ⏳", R.drawable.attendance, AttendanceActivity.class));
-        featureList.add(new DashboardFeature("Incident Reporting 🚨",  R.drawable.warning, IncidentReportingActivity.class));
+        featureList.add(new DashboardFeature("Security Guard Database ", R.drawable.database, GuardDatabaseActivity.class));
+        featureList.add(new DashboardFeature("Live Guard Location Tracking ",  R.drawable.map, LiveTrackingActivity.class));
+        featureList.add(new DashboardFeature("Duty Assignment ",  R.drawable.assign, DutyAssignmentActivity.class));
+        featureList.add(new DashboardFeature("Shift & Attendance Monitoring ", R.drawable.attendance, AttendanceActivity.class));
+        featureList.add(new DashboardFeature("Incident Reporting ",  R.drawable.warning, IncidentReportingActivity.class));
+        featureList.add(new DashboardFeature("Pending Guard Approvals",  R.drawable.circle, PendingGuardRequests.class));
         //featureList.add(new DashboardFeature("Guard Performance & Feedback ⭐",  R.drawable.logo_tmg, FeedbackActivity.class));
 
         adapter = new DashboardAdapter(this, featureList);

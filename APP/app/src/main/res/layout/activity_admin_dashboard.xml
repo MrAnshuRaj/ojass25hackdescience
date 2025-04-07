@@ -2,18 +2,19 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:backgroundTint="#fff"
     android:fillViewport="true"
-    android:id="@+id/main"
     tools:context=".AdminDashboardActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:padding="16dp"
-        android:gravity="center_horizontal">
+        android:padding="16dp">
 
         <!-- Title -->
         <TextView
@@ -23,7 +24,7 @@
             android:layout_marginBottom="20dp"
             android:gravity="center"
             android:text="Admin Dashboard"
-            android:textColor="#400000"
+            android:textColor="@color/HeadingWelcome"
             android:textSize="32sp"
             android:textStyle="bold" />
 
@@ -35,14 +36,22 @@
             android:fontFamily="@font/adamina"
             android:gravity="center"
             android:text="Welcome!"
-            android:textColor="@color/orange"
+            android:textColor="@color/reportTextClr"
             android:textSize="28sp"
             android:textStyle="bold" />
 
-       <androidx.recyclerview.widget.RecyclerView
-           android:id="@+id/rvDash"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvDash"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/btnLogOut"
+            android:layout_width="match_parent"
+            android:layout_marginTop="8dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/btnTextClr"
+            android:backgroundTint="#980000"
+            android:text="Log out" />
     </LinearLayout>
 </ScrollView>
